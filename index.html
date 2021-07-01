@@ -1,40 +1,597 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="description" content="An overview of modern C++ features">
+        <meta name="author" content="Loic URIEN">
 
-		<title>reveal.js</title>
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+        <title>Modern C++ Overview</title>
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+        <link rel="stylesheet" href="dist/reset.css">
+        <link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/theme/solarized_custom.css">
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+        <!-- Theme used for syntax highlighted code -->
+        <link rel="stylesheet" href="plugin/highlight/tomorrow-night-eighties.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-auto-animate>
+                    <h3>An overview of modern C++ standards</h3>
+                    <img src="img/isocpp_logo.png" alt="cpp-logo" width="175" height="200" />
+                    <div class="fragment fade-in">
+                        <em>from C++11 to C++17</em>
+                    </div>
+                </section>
+                <section data-auto-animate>
+                    <h3>An overview of modern C++ standards</h3>
+                    <img src="img/isocpp_logo.png" alt="cpp-logo" width="175" height="200" />
+                    <div>
+                        <em>Let's get started</em>
+                    </div>
+                </section>
+                <section>
+                    <section>
+                        <h3>C++11 features...</h3>
+                        <p>...that we all should use</p>
+                        <ul style="display: block; text-align: left;">
+                            <li class="fragment fade-in">auto and decltype</li>
+                            <li class="fragment fade-in">default and delete (for methods)</li>
+                            <li class="fragment fade-in">final and override</li>
+                            <li class="fragment fade-in">constexpr</li>
+                            <li class="fragment fade-in">nullptr</li>
+                            <li class="fragment fade-in">using for type aliases</li>
+                            <li class="fragment fade-in">lambdas</li>
+                            <li class="fragment fade-in">inherited constructors</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">auto and decltype</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            // auto is particularly handy when the type is potentially hard 
+                            // to write like in the case of iterators	
+                            template<class T, class P>
+                            T find_or_default(const std::vector<T>& vec, 
+                                              P predicate, 
+                                              T default_val)
+                            {
+                                typename std::vector<T>::const_iterator it = std::find_if(std::begin(vec), std::end(vec), predicate);
+                                
+                                if(it == vec.end())
+                                {
+                                    return default_val;
+                                }
+                                
+                                return *it;
+                            }
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">auto and decltype</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers=8><script type="text/template">
+                            // auto is particularly handy when the type is potentially hard 
+                            // to write like in the case of iterators	
+                            template<class T, class P>
+                            T find_or_default(const std::vector<T>& vec, 
+                                              P predicate, 
+                                              T default_val)
+                            {
+                                typename std::vector<T>::const_iterator it = std::find_if(std::begin(vec), std::end(vec), predicate);
+                                
+                                if(it == vec.end())
+                                {
+                                    return default_val;
+                                }
+                                
+                                return *it;
+                            }
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">auto and decltype</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers=8><script type="text/template">
+                            // auto is particularly handy when the type is potentially hard 
+                            // to write like in the case of iterators	
+                            template<class T, class P>
+                            T find_or_default(const std::vector<T>& vec, 
+                                              P predicate, 
+                                              T default_val)
+                            {
+                                auto it = std::find_if(std::begin(vec), std::end(vec), predicate);
+                                
+                                if(it == vec.end())
+                                {
+                                    return default_val;
+                                }
+                                
+                                return *it;
+                            }
+                        </script></code></pre>
+                        <p>Still strongly typed</p>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">auto and decltype</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            // easier to refactor
+                            class Titi {};
+                            class Tata {};
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+                            ... 
+                            Titi foo() { ... }
+
+                            ... 
+                            auto x = foo();
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">auto and decltype</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers=6-9><script type="text/template">
+                            // easier to refactor
+                            class Titi {};
+                            class Tata {};
+
+                            ... 
+                            Tata foo() { ... }
+
+                            ...
+                            auto x = foo();
+                        </script></code></pre>
+                        <p>Still compiles (depending on what we do with x of course...)</p>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">auto and decltype</h3>
+                        <p>When not to use auto? It's still good to keep the code as explicit as possible, leaving the
+                            compiler to deduce our types may make things much harder to read. Be mindful!
+                        </p>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">auto and decltype</h3>
+                        <p>To keep in mind for backport : auto return types are not supported in C++11</p>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">default and delete</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            class MoveOnly
+                            {
+                            public:
+                                MoveOnly() = default;
+                                MoveOnly(MoveOnly&&) = default;
+                                MoveOnly(const MoveOnly&) = delete;
+                                
+                                MoveOnly& operator=(MoveOnly&&) = default;
+                                MoveOnly& operator=(const MoveOnly&) = delete;
+                                
+                            private:
+                                SomeResourceHandle resource_;
+                            };
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">default and delete</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            class MoveOnly
+                            {
+                            public:
+                                MoveOnly() = default;
+                                MoveOnly(MoveOnly&&) = default;
+                                MoveOnly(const MoveOnly&) = delete;
+                                
+                                MoveOnly& operator=(MoveOnly&&) = default;
+                                MoveOnly& operator=(const MoveOnly&) = delete;
+                                
+                            private:
+                                SomeResourceHandle resource_;
+                            };
+                        </script></code></pre>
+                        <p>We force the default generation of constructors that would not be default constructed as we're deleting the copy operator and constructor (see : Rule of 5)</p>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">default and delete</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            MoveOnly x1{};
+                            MoveOnly x2 = x1; // invalid
+                            MoveOnly x2 = std::move(x1);
+                        </script></code></pre>
+                        <p>Important : having an empty constructor and having a defaulted constructor is not the same thing</p>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">override and final</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            class Parent
+                            {
+                            public:
+                                virtual void foo1() = 0;
+                                virtual void foo2() = 0;
+                            }
+                            
+                            class Child : public Parent
+                            {
+                            public:
+                                void foo1() override {...}
+                                void foo2() final {...}
+                            };
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">override and final</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            class Parent
+                            {
+                            public:
+                                virtual void foo1() = 0;
+                                virtual void foo2() = 0;
+                            }
+                            
+                            class Child : public Parent
+                            {
+                            public:
+                                void foo1() override {...}
+                                void foo2() final {...}
+                            };
+                        </script></code></pre>
+                        <p>Override will generate an error if the signature doesn't match any virtual method in the parent class</p>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">constexpr</h3>
+                        <p>constexpr variables</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            constexpr int the_answer = 42;
+
+                            std::array<int, the_answer> arr{}; // creates an array of size 42
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">constexpr</h3>
+                        <p>constexpr variables</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            template<size_t nb_elements>
+                            class DataStructure
+                            {
+                                ...
+                            public:
+                                static constexpr size_t MAX_NB_ELEMENTS = 4096;    
+                                static_assert(nb_elements <= MAX_NB_ELEMENTS);
+
+                                ...
+                            };
+                        </script></code></pre>
+                    </section>
+                    <section>
+                        <h3>contexpr</h3>
+                        <p>Constexpr variables are essentially the strongly typed version of our #define</p>
+                        </br>
+                        <p>More complex types can be constexpr, for it they must be "literal types". The rules are <a href="https://en.cppreference.com/w/cpp/named_req/LiteralType">pretty complex</a> though, so we won't enumerate them here</p>
+                    </section>
+                    <section>
+                        <h3>contexpr</h3>
+                        <p>There also exists constexpr functions, but I won't talk about them now</p>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3>nullptr</h3>
+                        <p>The problem with NULL is that it could be either</p>
+                        <ul style="display: block; text-align: left;">
+                            <li>#define NULL ((char*)0)</li>
+                            <li>#define NULL 0L</li>
+                            <li>#define NULL 0</li>
+                        </ul>
+                    </section>
+                    <section data-auto-animate>
+                        <h3>nullptr</h3>
+                        <p>nullptr is strongly typed (type std::nullptr_t) and can be implicitely converted to null pointer value of any pointer type</p>
+                        </br>
+                        <p>We can also have an overload on the type std::nullptr_t</p>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">using for type aliases</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            // Old typedef
+                            typedef int MISHORT // ;)
+                            // Now
+                            using MISHORT = int;
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">using for type aliases</h3>
+                        <em>Template aliases</em>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            template<class T>
+                            struct MySuperAllocator {};
+
+                            template<class T>
+                            using MySuperVector = std::vector<T, MySuperAllocator<T>>;
+                        </script></code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">lambdas</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            struct ChainConcatenator
+                            {
+                                std::string operator()(std::string acc, double x)
+                                {
+                                    return acc + " -> " + std::to_string(x);
+                                }
+                            };
+
+                            ...
+                            std::vector<double> vec{ 1.3, 1.5, 3.5 };
+                            auto str = std::accumulate(std::begin(vec) + 1, 
+                                                       std::end(vec), 
+                                                       std::to_string(vec[0]), 
+                                                       ChainConcatenator{});
+
+                            std::cout << std::endl << str << std::endl; 
+                            // prints 1.300000 -> 1.500000 -> 3.500000
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">lambdas</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            auto concatenator = [](std::string acc, double x) {
+                                return acc + " -> " + std::to_string(x);
+                            };
+
+                            std::vector<double> vec{ 1.3, 1.5, 3.5 };
+                            auto str = std::accumulate(std::begin(vec) + 1, 
+                                                       std::end(vec), 
+                                                       std::to_string(vec[0]), 
+                                                       concatenator);
+
+                            std::cout << std::endl << str << std::endl; 
+                            // prints 1.300000 -> 1.500000 -> 3.500000
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">lambdas</h3>
+                        <p>Variable capture</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            const char* link_symbol = " *-* ";
+
+                            auto concatenator = [link_symbol](std::string acc, double x) {
+                                return acc + link_symbol + std::to_string(x);
+                            };
+
+                            std::vector<double> vec{ 1.3, 1.5, 3.5 };
+                            auto str = std::accumulate(std::begin(vec) + 1, 
+                                                       std::end(vec), 
+                                                       std::to_string(vec[0]), 
+                                                       concatenator);
+
+                            std::cout << std::endl << str << std::endl; 
+                            // prints 1.300000 *-* 1.500000 *-* 3.500000
+                        </script></code></pre>
+                    </section>
+                    <section>
+                        <h3>lambdas</h3>
+                        <ul style="display: block; text-align: left;">
+                            <li><pre>[]        -> Captures nothing, similar to free function</pre></li>
+                            <li><pre>[&]       -> Captures every referenced variable by ref</pre></li>
+                            <li><pre>[=]       -> Captures every referenced variable by value</pre></li>
+                            <li><pre>[=, &foo] -> Captures variables by value, but foo by reference</pre></li>
+                            <li><pre>[bar]     -> Only copies bar</pre></li>
+                            <li><pre>[this]    -> Only copies the object pointer</pre></li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">inherited constructors</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            class Parent
+                            {
+                            public:
+                                explicit Parent(int num_elems);
+                            }
+                            
+                            class Child : public Parent
+                            {
+                                ...
+                            };
+                            
+                            ...
+                            Parent my_parent{ 12 };
+                            Child my_child{ 12 };
+                            // error: no matching function for call to ‘Child::Child()
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">inherited constructors</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers=9,14><script type="text/template">
+                            class Parent
+                            {
+                            public:
+                                explicit Parent(int num_elems);
+                            }
+                            
+                            class Child : public Parent
+                            {
+                                ...
+                            };
+                            
+                            ...
+                            Parent my_parent{ 12 };
+                            Child my_child{ 12 };
+                            // error: no matching function for call to ‘Child::Child()
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">inherited constructors</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers=10,16><script type="text/template">
+                            class Parent
+                            {
+                            public:
+                                explicit Parent(int num_elems);
+                            }
+                            
+                            class Child : public Parent
+                            {
+                            public:
+                                using Parent::Parent;
+                                ...
+                            };
+                            
+                            ...
+                            Parent my_parent{ 12 };
+                            Child my_child{ 12 }; // (⊃｡•́‿•̀｡)⊃
+                            // error: no matching function for call to ‘Child::Child()
+                        </script></code></pre>
+                    </section> 
+                </section>
+                <section>
+                    <section>
+                        <h3>C++14 features</h3>
+                        <p>Important things to know</p>
+                        <ul style="display: block; text-align: left;">
+                            <li class="fragment fade-in">std::make_unique</li>
+                            <li class="fragment fade-in">Generic lambdas</li>
+                            <li class="fragment fade-in">Variable templates</li>
+                            <li class="fragment fade-in">Extended constexpr</li>
+                        </ul>
+                    </section>
+                    <section>test</section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">std::make_unique</h3>
+                        <p>to match std::make_shared, another way to not write <em>new</em></p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            // Before
+                            std::unique_ptr<BigObject> ptr1{ new BigObject(my_arg) };
+
+                            // After
+                            auto ptr2 = std::make_unique<BigObject>(my_arg);
+                        </script></code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">generic lambdas</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            auto concatenator = [](std::string acc, double x) {
+                                return acc + " -> " + std::to_string(x);
+                            };
+
+                            std::vector<double> vec1{ 1.3, 1.5, 3.5 };
+                            auto str = std::accumulate(std::begin(vec1) + 1, 
+                                                       std::end(vec1), 
+                                                       std::to_string(vec1[0]), 
+                                                       concatenator);
+
+                            std::vector<int> vec2{ 1, 1, 3 };
+                            auto str = std::accumulate(std::begin(vec2) + 1, 
+                                                       std::end(vec2), 
+                                                       std::to_string(vec2[0]), 
+                                                       concatenator);
+                            // NOPE
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">generic lambdas</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers=0-6,13,19><script type="text/template">
+                            auto concatenator_i = [](std::string acc, int x) {
+                                return acc + " -> " + std::to_string(x);
+                            };
+
+                            auto concatenator_d = [](std::string acc, double x) {
+                                return acc + " -> " + std::to_string(x);
+                            };
+
+                            std::vector<double> vec1{ 1.3, 1.5, 3.5 };
+                            auto str = std::accumulate(std::begin(vec1) + 1, 
+                                                       std::end(vec1), 
+                                                       std::to_string(vec1[0]), 
+                                                       concatenator_d);
+
+                            std::vector<int> vec2{ 1, 1, 3 };
+                            auto str = std::accumulate(std::begin(vec2) + 1, 
+                                                       std::end(vec2), 
+                                                       std::to_string(vec2[0]), 
+                                                       concatenator_i);
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">generic lambdas</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers=0-10><script type="text/template">
+                            template<class T>
+                            std::function<std::string(std::string, T)> make_concatenator()
+                            {
+                                return [](std::string acc, T x) {
+                                    return acc + " -> " + std::to_string(x);
+                                };
+                            }
+
+                            auto concatenator_d = make_concatenator<double>;
+                            auto concatenator_i = make_concatenator<int>;
+
+                            std::vector<double> vec1{ 1.3, 1.5, 3.5 };
+                            auto str = std::accumulate(std::begin(vec1) + 1, 
+                                                       std::end(vec1), 
+                                                       std::to_string(vec1[0]), 
+                                                       concatenator_d);
+
+                            std::vector<int> vec2{ 1, 1, 3 };
+                            auto str = std::accumulate(std::begin(vec2) + 1, 
+                                                       std::end(vec2), 
+                                                       std::to_string(vec2[0]), 
+                                                       concatenator_i);
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">generic lambdas</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers=0-2,9,15><script type="text/template">
+                            auto concatenator = [](std::string acc, auto x) {
+                                return acc + " -> " + std::to_string(x);
+                            };
+
+                            std::vector<double> vec1{ 1.3, 1.5, 3.5 };
+                            auto str = std::accumulate(std::begin(vec1) + 1, 
+                                                       std::end(vec1), 
+                                                       std::to_string(vec1[0]), 
+                                                       concatenator);
+
+                            std::vector<int> vec2{ 1, 1, 3 };
+                            auto str = std::accumulate(std::begin(vec2) + 1, 
+                                                       std::end(vec2), 
+                                                       std::to_string(vec2[0]), 
+                                                       concatenator);
+                        </script></code></pre>
+                    </section>
+                </section>
+            </div>
+        </div>
+
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/notes/notes.js"></script>
+        <script src="plugin/markdown/markdown.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+        <script>
+            // More info about initialization & config:
+            // - https://revealjs.com/initialization/
+            // - https://revealjs.com/config/
+            Reveal.initialize({
+                hash: true,
+
+                // Learn about plugins: https://revealjs.com/plugins/
+                plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+            });
+        </script>
+    </body>
 </html>
