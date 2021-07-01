@@ -578,6 +578,82 @@
                         </script></code></pre>
                     </section>
                 </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">template variables</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                                template<class T>
+                                constexpr T pi = T(3.1415926535897932385);  // variable template
+                                 
+                                template<class T>
+                                T circular_area(T r) // function template
+                                {
+                                    return pi<T> * r * r;
+                                };
+                        </script></code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">extended constexpr</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            // Before C++14
+                            constexpr size_t factorial(size_t n)
+                            {
+                                return n <= 1 ? 1 (n * factorial(n - 1));
+                            }
+
+                            ...
+                            // Compile time evaluation 
+                            constexpr int cst = factorial(10);
+
+                            int x1 = factorial(10);
+
+                            // Runtime evaluation
+                            int n = something_complex(...);
+                            int x2 = factorial(n);
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">extended constexpr</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            // Since C++14
+                            constexpr size_t factorial(size_t n)
+                            {
+                                size_t res = 1;
+
+                                for(size_t i = 2; i <= n; ++i)
+                                {
+                                    res *= i;
+                                }
+
+                                return res;
+                            }
+
+                            ...
+                            // Compile time evaluation 
+                            constexpr int cst = factorial(10);
+
+                            int x1 = factorial(10);
+
+                            // Runtime evaluation
+                            int n = something_complex(...);
+                            int x2 = factorial(n);
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">extended constexpr</h3>
+                        <p>Evaluated at compile time if all its arguments are constant. The rules for what can in a constexpr function
+                            have been relaxed since C++14, allowing a more natural control flow, multiple returns, branches and loops.
+                        </p>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">extended constexpr</h3>
+                        <p>
+                          There are still a <a href="https://en.cppreference.com/w/cpp/language/constexpr">lot of restrictions though</a> 
+                        </p>
+                    </section>
+                </section>
             </div>
         </div>
 
