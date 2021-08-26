@@ -660,7 +660,7 @@
                     </section>
                     <section data-auto-animate>
                         <h3 data-id="code-title">extended constexpr</h3>
-                        <p>Evaluated at compile time if all its arguments are constant. The rules for what can in a constexpr function
+                        <p>Evaluated at compile time if all its arguments are constant. The rules for what can be used in a constexpr function
                             have been relaxed since C++14, allowing a more natural control flow, multiple returns, branches and loops.
                         </p>
                     </section>
@@ -694,7 +694,7 @@
                         <ul style="display: block; text-align: left;">
                             <li class="fragment fade-in">create, copy, move rename, delete files</li>
                             <li class="fragment fade-in">handles path construction</li>
-                            <li class="fragment fade-in">retrieves file infos (permission, creationg date, etc...)</li>
+                            <li class="fragment fade-in">retrieves file infos (permission, creation date, etc...)</li>
                             <li class="fragment fade-in">and much more!</li>
                         </ul>
                     </section>
@@ -852,7 +852,7 @@
                                 auto x2 = std::get<0>(v);
                              
                                 auto y1 = std::get<double>(v); // will throw, no double in [int, float]
-                                auto y2 = std::get<3>(v);      // will throwvalid index values are 0 and 1
+                                auto y2 = std::get<3>(v);      // will throw, valid index values are 0 and 1
                         </script></code></pre>
                     </section>
                     <section data-auto-animate>
@@ -916,7 +916,7 @@
                             std::vector<int> v{ 1, 2, 3 };
                             auto x = safe_get(v, 0);
                             
-                            if(std::holds_alternative<std::monostate>(x)) do_something(std::get<int>(x));
+                            if(!std::holds_alternative<std::monostate>(x)) do_something(std::get<int>(x));
                             else handle_error();
                         </script></code></pre>
                     </section>
@@ -1096,6 +1096,51 @@
                         </script></code></pre>
                     </section>
                 </section>
+                <section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">structured bindings</h3>
+                        <p>Tuple like type :</p>
+                        <ul style="display: block; text-align: left;">
+                            <li class="fragment fade-in">Not a union</li>
+                            <li class="fragment fade-in">Has a specialization for std::tuple_size&lt;T&gt;</li>
+                        </ul>
+                        <p class="fragment fade-in">or</p>
+                        <ul style="display: block; text-align: left;">
+                            <li class="fragment fade-in">Is an array type</li>
+                            <li class="fragment fade-in">Is a tuple or a pair (obviously)</li>
+                        </ul>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">structured bindings</h3>
+                        <p>Allow to "destructure" a tuple-like type</p>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            int arr[2] = { 1, 2 };
+
+                            auto [a, b] = arr; // Make a copy
+                            auto& [a_ref, b_ref] = arr; // Take references
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">structured bindings</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            std::tuple tup{ 1.0, "Hello world!", 2 };
+
+                            auto [val, msg, count] = tup; // Make a copy
+                            auto& [val_ref, msg_ref, count_ref] = tup; // Take references
+                        </script></code></pre>
+                    </section>
+                    <section data-auto-animate>
+                        <h3 data-id="code-title">structured bindings</h3>
+                        <pre data-id="code-animation"><code class="language-cpp" data-trim data-line-numbers><script type="text/template">
+                            std::pair p{ 1.0, "Hello world!" };
+
+                            auto [val, msg] = p; // Make a copy
+                            auto& [val_ref, msg_ref] = p; // Take references
+                        </script></code></pre>
+                    </section>
+                </section>
+
+
             </div>
         </div>
 
